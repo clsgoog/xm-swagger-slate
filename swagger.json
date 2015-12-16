@@ -361,7 +361,7 @@
                     },
                     {
                         "in":"body",
-                        "name":"result",
+                        "name": "body",
                         "description":"result",
                         "required":true,
                         "schema":{
