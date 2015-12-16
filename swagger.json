@@ -1,0 +1,2368 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"description": "The xM API",
+		"title": "xM API",
+		"contact": { },
+		"license": { }
+	},
+	"host": "jpmc.hosted.xmatters.com:80",
+	"basePath": "/api/xm/1",
+	"tags": [
+		{
+			"name": "groups",
+			"description": "Groups"
+		},
+		{
+			"name": "integrations",
+			"description": "Integrations"
+		},
+		{
+			"name": "shifts",
+			"description": "Shifts"
+		},
+		{
+			"name": "people",
+			"description": "People"
+		},
+		{
+			"name": "devices",
+			"description": "Devices"
+		},
+		{
+			"name": "sites",
+			"description": "Sites"
+		}
+	],
+	"consumes": [
+		"application/json"
+	],
+	"produces": [
+		"application/json"
+	],
+	"paths": {
+		"/devices/{deviceId}": {
+			"get": {
+				"tags": [
+					"devices"
+				],
+				"summary": "Returns information about a device. Use embed=timeframes to include device timeframes in the response.",
+				"description": "Returns information about a device. Use embed=timeframes to include device timeframes in the response.",
+				"operationId": "getDeviceUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "deviceId",
+						"in": "path",
+						"description": "The ID of the device. To find the ID of a device, use GET /people/{personId}/devices to retrieve a list of a user’s devices. The id field contains the device ID.",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "embed",
+						"description": "Use \"timeframes\" to include the timeframes in which the device is active.",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/Embeddable"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Device"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"devices"
+				],
+				"summary": "Deletes a device and removes it from the owner's device list.",
+				"description": "Deletes a device and removes it from the owner's device list.",
+				"operationId": "deleteDeviceUsingDELETE",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "deviceId",
+						"in": "path",
+						"description": "The ID of the device. To find the ID of a device, use GET /people/{personId}/devices to retrieve a list of a user’s devices. The id field contains the device ID.",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Device"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"204": {
+						"description": "No Content - A resource is not found in response to a DELETE request"
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		},
+		"/groups": {
+			"post": {
+				"tags": [
+					"groups"
+				],
+				"summary": "Creates a group",
+				"description": "Creates a group",
+				"operationId": "postGroupUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "A GroupPost object that contains a description of the new group",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/GroupPost"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Group"
+						}
+					},
+					"400": {
+						"description": "Bad Request - The request is malformed",
+						"schema": {
+							"$ref": "#/definitions/BadRequestResponse"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"409": {
+						"description": "Conflict - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/ConflictResponse"
+						}
+					}
+				}
+			}
+		},
+		"/groups/{groupId}": {
+			"get": {
+				"tags": [
+					"groups"
+				],
+				"summary": "Returns information about a group.",
+				"description": "Returns information about a group.",
+				"operationId": "getGroupUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "groupId",
+						"in": "path",
+						"description": "Identifies the group by group name or uniqe identifier. To get the unique identifier for a group, use GET /groups/{groupId} and refer to the id field.",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Group"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"groups"
+				],
+				"summary": "Deletes a Group.",
+				"description": "Deletes a Group.",
+				"operationId": "deleteGroupUsingDELETE",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "groupId",
+						"in": "path",
+						"description": "Identifies the group by group name or uniqe identifier. To get the unique identifier for a group, use GET /groups/{groupId} and refer to the id field.",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Group"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"204": {
+						"description": "No Content - A resource is not found in response to a DELETE request"
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		},
+		"/groups/{groupId}/members": {
+			"post": {
+				"tags": [
+					"groups"
+				],
+				"summary": "postGroupMembers",
+				"operationId": "postGroupMembersUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "groupId",
+						"in": "path",
+						"description": "groupId",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "memberToAdd",
+						"description": "memberToAdd",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/GroupMemberReference"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Recipient"
+						}
+					},
+					"400": {
+						"description": "Bad Request - The request is malformed",
+						"schema": {
+							"$ref": "#/definitions/BadRequestResponse"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"409": {
+						"description": "Conflict - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/ConflictResponse"
+						}
+					}
+				}
+			}
+		},
+		"/groups/{groupId}/shifts/{shiftId}": {
+			"get": {
+				"tags": [
+					"shifts"
+				],
+				"summary": "getShift",
+				"operationId": "getShiftUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "groupId",
+						"in": "path",
+						"description": "groupId",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "shiftId",
+						"in": "path",
+						"description": "shiftId",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Shift"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		},
+		"/integration-functions/{functionId}": {
+			"get": {
+				"tags": [
+					"integrations"
+				],
+				"summary": "getIntegrationFunction",
+				"description": "Retrieve integration function information",
+				"operationId": "getIntegrationFunctionUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "functionId",
+						"in": "path",
+						"description": "functionId",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "embed",
+						"in": "query",
+						"description": "embed",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/IntegrationFunction"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		},
+		"/integration-functions/{functionId}/invocations": {
+			"post": {
+				"tags": [
+					"integrations"
+				],
+				"summary": "postIntegrationFunctionInvocation",
+				"description": "Post results of an integration function invocation",
+				"operationId": "postIntegrationFunctionInvocationUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "functionId",
+						"in": "path",
+						"description": "functionId",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "result",
+						"description": "result",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/JobResult"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/IntegrationFunctionInvocation"
+						}
+					},
+					"201": {
+						"description": "Created",
+						"schema": {
+							"$ref": "#/definitions/IntegrationFunctionInvocation"
+						}
+					},
+					"400": {
+						"description": "Bad Request - The request is malformed",
+						"schema": {
+							"$ref": "#/definitions/BadRequestResponse"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"409": {
+						"description": "Conflict - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/ConflictResponse"
+						}
+					}
+				}
+			}
+		},
+		"/integration-invocations/{invocationId}": {
+			"get": {
+				"tags": [
+					"integrations"
+				],
+				"summary": "getIntegrationFunctionInvocation",
+				"description": "Retrieve results of one integration function invocation",
+				"operationId": "getIntegrationFunctionInvocationUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "invocationId",
+						"in": "path",
+						"description": "invocationId",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/IntegrationFunctionInvocation"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		},
+		"/integration-scripts/{scriptId}": {
+			"get": {
+				"tags": [
+					"integrations"
+				],
+				"summary": "getIntegrationScript",
+				"description": "Retrieve integration script information",
+				"operationId": "getIntegrationScriptUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "scriptId",
+						"in": "path",
+						"description": "scriptId",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/IntegrationScript"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		},
+		"/integration-tickets": {
+			"get": {
+				"tags": [
+					"integrations"
+				],
+				"summary": "getIntegrationTickets",
+				"description": "Retrieve integration tickets, optionally including expired tickets",
+				"operationId": "getIntegrationTicketsUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "includeExpired",
+						"in": "query",
+						"description": "includeExpired",
+						"required": false,
+						"type": "boolean"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/IntegrationTicket"
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"integrations"
+				],
+				"summary": "postIntegrationTicket",
+				"description": "Creates a new integration ticket",
+				"operationId": "postIntegrationTicketUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "post",
+						"description": "post",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IntegrationTicketPost"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/IntegrationTicket"
+						}
+					},
+					"400": {
+						"description": "Bad Request - The request is malformed",
+						"schema": {
+							"$ref": "#/definitions/BadRequestResponse"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"409": {
+						"description": "Conflict - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/ConflictResponse"
+						}
+					}
+				}
+			}
+		},
+		"/integration-tickets/{ticketId}": {
+			"get": {
+				"tags": [
+					"integrations"
+				],
+				"summary": "getIntegrationTicket",
+				"description": "Retrieve integration tickets, optionally including expired tickets",
+				"operationId": "getIntegrationTicketUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "ticketId",
+						"in": "path",
+						"description": "ticketId",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "includeExpired",
+						"in": "query",
+						"description": "includeExpired",
+						"required": false,
+						"type": "boolean"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/IntegrationTicket"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			},
+			"patch": {
+				"tags": [
+					"integrations"
+				],
+				"summary": "patchIntegrationTicket",
+				"description": "Updates the expiry time or the batch size and TTL of an existing non-expired integration ticket",
+				"operationId": "patchIntegrationTicketUsingPATCH",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "ticketId",
+						"in": "path",
+						"description": "ticketId",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "patch",
+						"description": "patch",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IntegrationTicketPatch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/IntegrationTicket"
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"204": {
+						"description": "No Content"
+					},
+					"403": {
+						"description": "Forbidden"
+					}
+				}
+			}
+		},
+		"/people": {
+			"post": {
+				"tags": [
+					"people"
+				],
+				"summary": "Creates a new user",
+				"description": "Creates a new user",
+				"operationId": "personPostUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "A PersonPost object that describes the new user.",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/PersonPost"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Person"
+						}
+					},
+					"400": {
+						"description": "Bad Request - The request is malformed",
+						"schema": {
+							"$ref": "#/definitions/BadRequestResponse"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"409": {
+						"description": "Conflict - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/ConflictResponse"
+						}
+					}
+				}
+			}
+		},
+		"/people/{personId}": {
+			"get": {
+				"tags": [
+					"people"
+				],
+				"summary": "Returns information about a user.",
+				"description": "Returns information about a user.",
+				"operationId": "getPersonUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "personId",
+						"in": "path",
+						"description": "A name or unique identifier that represents a user. Locate these values In the web interface on the user details page. The User ID field identifies the user by name. Click the API button to view the unique identifier that represents the user.",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Person"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"people"
+				],
+				"summary": "Deletes a user",
+				"description": "Deletes a user",
+				"operationId": "deletePersonUsingDELETE",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "personId",
+						"in": "path",
+						"description": "A name or unique identifier that represents a user. Use the id or targetName value from GET /people/{personId}.",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Person"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"204": {
+						"description": "No Content - A resource is not found in response to a DELETE request"
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		},
+		"/people/{personId}/devices": {
+			"get": {
+				"tags": [
+					"people"
+				],
+				"summary": "Retrieves a list of a user's devices.",
+				"description": "Retrieves a list of a user's devices.",
+				"operationId": "getPersonDevicesByUuidPaginatingUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "personId",
+						"in": "path",
+						"description": "A name or unique identifier that represents a user. Use the id or targetName value from GET /people/{personId}.",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "embed",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Pagination«Device»"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		},
+		"/sites/{siteId}": {
+			"get": {
+				"tags": [
+					"sites"
+				],
+				"summary": "Returns information about a site.",
+				"description": "Returns information about a site.",
+				"operationId": "getSiteUsingGET",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "siteId",
+						"in": "path",
+						"description": "ID or the name of the site.",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/Site"
+						}
+					},
+					"401": {
+						"description": "Unauthorized - The action cannot be performed in the system",
+						"schema": {
+							"$ref": "#/definitions/UnauthorizedResponse"
+						}
+					},
+					"403": {
+						"description": "Forbidden - The authenticated user does not have permission to perform this action",
+						"schema": {
+							"$ref": "#/definitions/ForbiddenResponse"
+						}
+					},
+					"404": {
+						"description": "Not Found - The resource does not exist",
+						"schema": {
+							"$ref": "#/definitions/NotFoundResponse"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"Site": {
+			"properties": {
+				"address1": {
+					"type": "string"
+				},
+				"address2": {
+					"type": "string"
+				},
+				"city": {
+					"type": "string"
+				},
+				"country": {
+					"type": "string"
+				},
+				"externalKey": {
+					"type": "string"
+				},
+				"externallyOwned": {
+					"type": "boolean"
+				},
+				"id": {
+					"type": "string"
+				},
+				"language": {
+					"type": "string"
+				},
+				"latitude": {
+					"type": "number",
+					"format": "double"
+				},
+				"links": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				},
+				"longitude": {
+					"type": "number",
+					"format": "double"
+				},
+				"name": {
+					"type": "string"
+				},
+				"postalCode": {
+					"type": "string"
+				},
+				"state": {
+					"type": "string"
+				},
+				"status": {
+					"type": "string",
+					"enum": [
+						"ACTIVE",
+						"INACTIVE"
+					]
+				},
+				"timezone": {
+					"type": "string"
+				}
+			}
+		},
+		"Group": {
+			"required": [
+				"externallyOwned",
+				"id",
+				"targetName"
+			],
+			"properties": {
+				"allowDuplicates": {
+					"type": "boolean"
+				},
+				"description": {
+					"type": "string"
+				},
+				"externalKey": {
+					"type": "string",
+					"description": "Identifies this resource in an external system. Used when externallyOwned is true."
+				},
+				"externallyOwned": {
+					"type": "boolean",
+					"description": "True if this resource is managed by an external system. Externally-owned resources cannot be deleted in the xMatters user interface."
+				},
+				"id": {
+					"type": "string",
+					"description": "An identifier (UUID or targetName) that represents this resource"
+				},
+				"links": {
+					"description": "A list of links",
+					"$ref": "#/definitions/SelfLink"
+				},
+				"locked": {
+					"type": "array",
+					"description": "Lists the fields of externally-owned objects that are locked and cannot be modified in the xMatters user interface",
+					"items": {
+						"type": "string"
+					}
+				},
+				"observedByAll": {
+					"type": "boolean"
+				},
+				"recipientType": {
+					"type": "string",
+					"description": "A description of the group.",
+					"enum": [
+						"GROUP"
+					]
+				},
+				"site": {
+					"description": "The name of the site the group belongs to.",
+					"$ref": "#/definitions/ReferenceByIdAndSelfLink"
+				},
+				"status": {
+					"type": "string",
+					"description": "Whether the group is active. Inactive groups cannot receive notifications.",
+					"enum": [
+						"ACTIVE",
+						"INACTIVE"
+					]
+				},
+				"targetName": {
+					"type": "string",
+					"description": "An identifier such as a name that can be used to identify a resource"
+				},
+				"useDefaultDevices": {
+					"type": "boolean"
+				}
+			}
+		},
+		"IntegrationEndpoint": {
+			"required": [
+				"alias",
+				"authType",
+				"type",
+				"url"
+			],
+			"properties": {
+				"alias": {
+					"type": "string",
+					"description": "The case-sensitive name used to access the endpoint in the JavaScript."
+				},
+				"apiKey": {
+					"type": "string",
+					"description": "The api key to use for authentication with XMATTERS endpoints."
+				},
+				"authPreemptive": {
+					"type": "boolean",
+					"description": "If Basic auth is used, determines whether credentials are sent preemptively."
+				},
+				"authType": {
+					"type": "string",
+					"description": "The type of authentication to use when making requests to this endpoint."
+				},
+				"password": {
+					"type": "string",
+					"description": "The encrypted password for authentication, if required."
+				},
+				"type": {
+					"type": "string",
+					"description": "The endpoint type. EXTERNAL type refers to endpoints created through the UI."
+				},
+				"url": {
+					"type": "string",
+					"description": "The base URL accessible through this endpoint. When making HTTP requests, additional path components may be appended."
+				},
+				"username": {
+					"type": "string",
+					"description": "The username for authentication, if required."
+				}
+			}
+		},
+		"ForbiddenResponse": {
+			"required": [
+				"code",
+				"message",
+				"reason"
+			],
+			"properties": {
+				"code": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The http response code.",
+					"enum": [
+						403
+					]
+				},
+				"message": {
+					"type": "string",
+					"description": "A detailed description of the response or error."
+				},
+				"reason": {
+					"type": "string",
+					"description": "A description of the response code.",
+					"enum": [
+						"Forbidden"
+					]
+				}
+			}
+		},
+		"BadRequestResponse": {
+			"required": [
+				"code",
+				"message",
+				"reason"
+			],
+			"properties": {
+				"code": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The http response code.",
+					"enum": [
+						400
+					]
+				},
+				"message": {
+					"type": "string",
+					"description": "A detailed description of the response or error."
+				},
+				"reason": {
+					"type": "string",
+					"description": "A description of the response code.",
+					"enum": [
+						"Bad Request"
+					]
+				}
+			}
+		},
+		"Pagination«DeviceTimeframe»": {
+			"required": [
+				"count",
+				"data",
+				"links",
+				"total"
+			],
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The number of items in this page of results (the number of items in the data array)."
+				},
+				"data": {
+					"type": "array",
+					"description": "An array that contains this page of resources.",
+					"items": {
+						"$ref": "#/definitions/DeviceTimeframe"
+					}
+				},
+				"links": {
+					"description": "A set of links to the previous, current, and next pages of results.",
+					"$ref": "#/definitions/PaginationLinks"
+				},
+				"total": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The total number of items in the result set."
+				}
+			}
+		},
+		"Pagination«Device»": {
+			"required": [
+				"count",
+				"data",
+				"links",
+				"total"
+			],
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The number of items in this page of results (the number of items in the data array)."
+				},
+				"data": {
+					"type": "array",
+					"description": "An array that contains this page of resources.",
+					"items": {
+						"$ref": "#/definitions/Device"
+					}
+				},
+				"links": {
+					"description": "A set of links to the previous, current, and next pages of results.",
+					"$ref": "#/definitions/PaginationLinks"
+				},
+				"total": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The total number of items in the result set."
+				}
+			}
+		},
+		"ReferenceByIdAndSelfLink": {
+			"required": [
+				"id",
+				"links"
+			],
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "The identifier of the resource."
+				},
+				"links": {
+					"description": "A set of links.",
+					"$ref": "#/definitions/SelfLink"
+				}
+			}
+		},
+		"UnauthorizedResponse": {
+			"required": [
+				"code",
+				"message",
+				"reason"
+			],
+			"properties": {
+				"code": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The http response code.",
+					"enum": [
+						401
+					]
+				},
+				"message": {
+					"type": "string",
+					"description": "A detailed description of the response or error."
+				},
+				"reason": {
+					"type": "string",
+					"description": "A description of the response code.",
+					"enum": [
+						"Unauthorized"
+					]
+				}
+			}
+		},
+		"GroupMemberReference": {
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"recipientType": {
+					"type": "string",
+					"enum": [
+						"GROUP",
+						"PERSON",
+						"DEVICE"
+					]
+				}
+			}
+		},
+		"PaginationLinks": {
+			"required": [
+				"self"
+			],
+			"properties": {
+				"next": {
+					"type": "string",
+					"description": "A link to the next page of results"
+				},
+				"previous": {
+					"type": "string",
+					"description": "A link to the previous page of results"
+				},
+				"self": {
+					"type": "string",
+					"description": "A link to this page of results"
+				}
+			}
+		},
+		"DeviceTimeframe": {
+			"properties": {
+				"days": {
+					"type": "array",
+					"description": "List of the days of the week this timeframe is active.",
+					"items": {
+						"type": "string"
+					}
+				},
+				"durationInMinutes": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The length of the timeframe in minutes."
+				},
+				"excludeHolidays": {
+					"type": "boolean",
+					"description": "True if the timeframe is not active on holidays."
+				},
+				"name": {
+					"type": "string",
+					"description": "Name of the device. Example: \"Work Phone\"."
+				},
+				"startTime": {
+					"type": "string",
+					"description": "The time of day that the timeframe begins."
+				}
+			}
+		},
+		"GroupPost": {
+			"properties": {
+				"allowDuplicates": {
+					"type": "boolean",
+					"description": "Whether the group allows a notification to be sent to a device multiple times."
+				},
+				"description": {
+					"type": "string"
+				},
+				"externalKey": {
+					"type": "string"
+				},
+				"externallyOwned": {
+					"type": "boolean"
+				},
+				"id": {
+					"type": "string"
+				},
+				"observedByAll": {
+					"type": "boolean",
+					"description": "Whether the group notifications are observed by all."
+				},
+				"recipientType": {
+					"type": "string",
+					"enum": [
+						"GROUP"
+					]
+				},
+				"site": {
+					"description": "The name of the site the group belongs to.",
+					"$ref": "#/definitions/ReferenceById"
+				},
+				"status": {
+					"type": "string",
+					"description": "Whether the group is active. Inactive groups do not receive notifications.",
+					"enum": [
+						"ACTIVE",
+						"INACTIVE"
+					]
+				},
+				"supervisors": {
+					"type": "array",
+					"description": "A list of group supervisors. Groups must have at least one supervisor.",
+					"items": {
+						"$ref": "#/definitions/ReferenceById"
+					}
+				},
+				"targetName": {
+					"type": "string"
+				},
+				"timezone": {
+					"type": "string"
+				},
+				"useDefaultDevices": {
+					"type": "boolean",
+					"description": "Whether the defaul user device should be used when sending out a notification to the group."
+				}
+			}
+		},
+		"ConflictResponse": {
+			"required": [
+				"code",
+				"message",
+				"reason"
+			],
+			"properties": {
+				"code": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The http response code.",
+					"enum": [
+						409
+					]
+				},
+				"message": {
+					"type": "string",
+					"description": "A detailed description of the response or error."
+				},
+				"reason": {
+					"type": "string",
+					"description": "A description of the response code.",
+					"enum": [
+						"Conflict"
+					]
+				}
+			}
+		},
+		"IntegrationTicket": {
+			"required": [
+				"batchSize",
+				"orgKey",
+				"secondsToLive",
+				"systemFormUuid",
+				"uuid"
+			],
+			"properties": {
+				"batchSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "Max batch size of requests that will be processed before the ticket is returned to the queue"
+				},
+				"expiryTime": {
+					"type": "string",
+					"description": "The time at which this ticket should be considered dropped, if it has not checked in before then"
+				},
+				"links": {
+					"$ref": "#/definitions/SelfLink"
+				},
+				"orgKey": {
+					"type": "string",
+					"description": "Organization identifier"
+				},
+				"secondsToLive": {
+					"type": "integer",
+					"format": "int64",
+					"description": "The time this ticket may go without updates before it considered lost or dropped. When a ticket is returned to the queue, this value is added to current time to determine expiryTime"
+				},
+				"systemFormUuid": {
+					"type": "string",
+					"description": "The UUID of the system level communication plan form to post failure notifications to"
+				},
+				"uuid": {
+					"type": "string",
+					"description": "UUID for the Ticket instance"
+				}
+			}
+		},
+		"UUID": {
+			"properties": {
+				"leastSignificantBits": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"mostSignificantBits": {
+					"type": "integer",
+					"format": "int64"
+				}
+			}
+		},
+		"IntegrationFunctionInvocation": {
+			"required": [
+				"function",
+				"id"
+			],
+			"properties": {
+				"completedTime": {
+					"type": "string"
+				},
+				"function": {
+					"description": "The function invoked",
+					"$ref": "#/definitions/ReferenceByIdAndSelfLink"
+				},
+				"id": {
+					"type": "string",
+					"format": "uuid",
+					"description": "The unique ID of this invocation record"
+				},
+				"job": {
+					"$ref": "#/definitions/IntegrationServiceJob"
+				},
+				"links": {
+					"$ref": "#/definitions/SelfLink"
+				},
+				"logfileName": {
+					"type": "string"
+				},
+				"startTime": {
+					"type": "string"
+				},
+				"status": {
+					"type": "string",
+					"enum": [
+						"COMPLETED",
+						"WARNING",
+						"FAILED",
+						"CANCELLED"
+					]
+				}
+			}
+		},
+		"IntegrationFunction": {
+			"required": [
+				"functionId",
+				"mainMethod",
+				"name",
+				"operation",
+				"requestsToLog",
+				"script",
+				"type"
+			],
+			"properties": {
+				"functionId": {
+					"type": "string",
+					"format": "uuid",
+					"description": "Unique ID of the integration"
+				},
+				"links": {
+					"$ref": "#/definitions/SelfLink"
+				},
+				"mainMethod": {
+					"type": "string",
+					"description": "Name of the function in the JavaScript, may be auto-generated."
+				},
+				"name": {
+					"type": "string",
+					"description": "Human-readable name assigned to the integration function"
+				},
+				"operation": {
+					"type": "string",
+					"description": "Action performed by this function, such as 'CREATE_EVENT' or 'OUTBOUND_CALLBACK'"
+				},
+				"requestsToLog": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The number of requests to log"
+				},
+				"script": {
+					"description": "The script to which the function belongs",
+					"$ref": "#/definitions/IntegrationScript"
+				},
+				"type": {
+					"type": "string",
+					"description": "Integration function type, such as 'INBOUND_WEBHOOK' or 'OUTBOUND_WEBHOOK'"
+				}
+			}
+		},
+		"ReferenceById": {
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "The identifier of the resource."
+				}
+			}
+		},
+		"IntegrationTicketPost": {
+			"required": [
+				"batchSize",
+				"orgKey",
+				"secondsToLive"
+			],
+			"properties": {
+				"batchSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "Max batch size of requests that will be processed before the ticket is returned to the queue"
+				},
+				"orgKey": {
+					"type": "string",
+					"description": "Organization identifier"
+				},
+				"secondsToLive": {
+					"type": "integer",
+					"format": "int64",
+					"description": "Sets or resets the expiryTime of the ticket to this many seconds from now"
+				}
+			}
+		},
+		"HttpRequest": {
+			"properties": {
+				"body": {
+					"type": "string"
+				},
+				"headers": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				},
+				"method": {
+					"type": "string"
+				},
+				"parameters": {
+					"type": "object"
+				},
+				"remoteAddr": {
+					"type": "string"
+				},
+				"requestId": {
+					"type": "string"
+				},
+				"timestamp": {
+					"type": "string"
+				},
+				"url": {
+					"type": "string"
+				},
+				"xtrace": {
+					"type": "string"
+				}
+			}
+		},
+		"Shift": {
+			"properties": {
+				"group": {
+					"$ref": "#/definitions/ReferenceByIdAndSelfLink"
+				},
+				"id": {
+					"type": "string"
+				},
+				"links": {
+					"$ref": "#/definitions/SelfLink"
+				},
+				"name": {
+					"type": "string"
+				}
+			}
+		},
+		"IntegrationTicketPatch": {
+			"properties": {
+				"batchSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "Max batch size of requests that will be processed before the ticket is returned to the queue"
+				},
+				"expiryTime": {
+					"type": "string",
+					"description": "Ticket will be considered expired at this time"
+				},
+				"secondsToLive": {
+					"type": "integer",
+					"format": "int64",
+					"description": "The time this ticket may go without updates before it considered lost or dropped. When a ticket is returned to the queue, this value is added to current time to determine expiryTime"
+				}
+			}
+		},
+		"SelfLink": {
+			"required": [
+				"self"
+			],
+			"properties": {
+				"self": {
+					"type": "string",
+					"description": "A link to this resource."
+				}
+			}
+		},
+		"JobResult": {
+			"required": [
+				"job"
+			],
+			"properties": {
+				"completedTime": {
+					"type": "string"
+				},
+				"job": {
+					"$ref": "#/definitions/IntegrationServiceJob"
+				},
+				"logfileName": {
+					"type": "string"
+				},
+				"startTime": {
+					"type": "string"
+				},
+				"status": {
+					"type": "string",
+					"enum": [
+						"COMPLETED",
+						"WARNING",
+						"FAILED",
+						"CANCELLED"
+					]
+				}
+			}
+		},
+		"Device": {
+			"required": [
+				"externallyOwned",
+				"id",
+				"owner",
+				"status",
+				"targetName"
+			],
+			"properties": {
+				"defaultDevice": {
+					"type": "boolean",
+					"description": "True if this device can receive notifications when the user has no active devices."
+				},
+				"delay": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The number of minutes to wait for a response before contacting the next device."
+				},
+				"description": {
+					"type": "string",
+					"description": "A description of the device."
+				},
+				"deviceType": {
+					"type": "string",
+					"description": "The type of device.",
+					"enum": [
+						"EMAIL",
+						"VOICE",
+						"TEXT_PHONE",
+						"TEXT_PAGER",
+						"NUMERIC_PAGER",
+						"IM",
+						"BROWSER",
+						"APPLE_PUSH",
+						"FAX",
+						"ANDROID_PUSH",
+						"BLACKBERRY_PUSH",
+						"VOICE_IVR",
+						"GENERIC"
+					]
+				},
+				"externalKey": {
+					"type": "string",
+					"description": "Identifies this resource in an external system. Used when externallyOwned is true."
+				},
+				"externallyOwned": {
+					"type": "boolean",
+					"description": "True if this resource is managed by an external system. Externally-owned resources cannot be deleted in the xMatters user interface."
+				},
+				"id": {
+					"type": "string",
+					"description": "An identifier (UUID or targetName) that represents this resource"
+				},
+				"links": {
+					"description": "A list of links",
+					"$ref": "#/definitions/SelfLink"
+				},
+				"locked": {
+					"type": "array",
+					"description": "Lists the fields of externally-owned objects that are locked and cannot be modified in the xMatters user interface",
+					"items": {
+						"type": "string"
+					}
+				},
+				"name": {
+					"type": "string",
+					"description": "The name of the device. Example: Work Email, Home Phone."
+				},
+				"owner": {
+					"description": "The owner of this resource",
+					"$ref": "#/definitions/ReferenceByIdAndSelfLink"
+				},
+				"priorityThreshold": {
+					"type": "string",
+					"description": "The minimum priority of an event for it to be delivered to this device.",
+					"enum": [
+						"LOW",
+						"HIGH",
+						"MEDIUM"
+					]
+				},
+				"recipientType": {
+					"type": "string",
+					"enum": [
+						"PERSON",
+						"DEVICE",
+						"TEAM",
+						"GROUP",
+						"DYNAMIC_TEAM",
+						"WEB_SERVICE_USER"
+					]
+				},
+				"sequence": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The order in which the device will be contacted, where 0 represents the first device contacted."
+				},
+				"status": {
+					"type": "string",
+					"description": "Whether the resource is active. Inactive resources do not receive notifications.",
+					"enum": [
+						"ACTIVE",
+						"INACTIVE"
+					]
+				},
+				"targetName": {
+					"type": "string",
+					"description": "An identifier such as a name that can be used to identify a resource"
+				},
+				"testStatus": {
+					"type": "string",
+					"description": "Whether the device has been tested.",
+					"enum": [
+						"TESTED",
+						"UNTESTED",
+						"PENDING",
+						"INVALID"
+					]
+				},
+				"timeframes": {
+					"description": "The time frames in which the device is available to receive notifications",
+					"$ref": "#/definitions/Pagination«DeviceTimeframe»"
+				}
+			},
+			"description": "Device base class"
+		},
+		"IntegrationScript": {
+			"required": [
+				"commPlanName",
+				"endpoints",
+				"functions",
+				"scriptId",
+				"sourceCode",
+				"version"
+			],
+			"properties": {
+				"authPassword": {
+					"type": "string",
+					"description": "The password of the user authorized to access this function"
+				},
+				"authUserName": {
+					"type": "string",
+					"description": "The username of the user authorized to access this function"
+				},
+				"commPlanName": {
+					"type": "string",
+					"description": "Name of the Communication Plan"
+				},
+				"endpoints": {
+					"type": "array",
+					"description": "Integration endpoints belonging to the integration",
+					"items": {
+						"$ref": "#/definitions/IntegrationEndpoint"
+					}
+				},
+				"functions": {
+					"type": "array",
+					"description": "Integration functions belonging to the integration",
+					"items": {
+						"$ref": "#/definitions/IntegrationFunction"
+					}
+				},
+				"links": {
+					"$ref": "#/definitions/SelfLink"
+				},
+				"scriptId": {
+					"type": "string",
+					"format": "uuid",
+					"description": "Unique ID of the script, corresponding to the UUID of the Communication Plan"
+				},
+				"sourceCode": {
+					"type": "string",
+					"description": "JavaScript source code of the integration script"
+				},
+				"version": {
+					"type": "integer",
+					"format": "int64",
+					"description": "Version of the integration script. Version numbers are monotonically increasing but not necessarily sequential. May be used to look up the script content in the revision table."
+				}
+			}
+		},
+		"Recipient": {
+			"required": [
+				"externallyOwned",
+				"id",
+				"owner",
+				"targetName"
+			],
+			"properties": {
+				"externalKey": {
+					"type": "string",
+					"description": "Identifies this resource in an external system. Used when externallyOwned is true."
+				},
+				"externallyOwned": {
+					"type": "boolean",
+					"description": "True if this resource is managed by an external system. Externally-owned resources cannot be deleted in the xMatters user interface."
+				},
+				"id": {
+					"type": "string",
+					"description": "An identifier (UUID or targetName) that represents this resource"
+				},
+				"links": {
+					"description": "A list of links",
+					"$ref": "#/definitions/SelfLink"
+				},
+				"locked": {
+					"type": "array",
+					"description": "Lists the fields of externally-owned objects that are locked and cannot be modified in the xMatters user interface",
+					"items": {
+						"type": "string"
+					}
+				},
+				"owner": {
+					"description": "The owner of this resource",
+					"$ref": "#/definitions/ReferenceByIdAndSelfLink"
+				},
+				"recipientType": {
+					"type": "string",
+					"enum": [
+						"PERSON",
+						"DEVICE",
+						"TEAM",
+						"GROUP",
+						"DYNAMIC_TEAM",
+						"WEB_SERVICE_USER"
+					]
+				},
+				"targetName": {
+					"type": "string",
+					"description": "An identifier such as a name that can be used to identify a resource"
+				}
+			}
+		},
+		"Map«string,string»": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"PersonPost": {
+			"properties": {
+				"externalKey": {
+					"type": "string"
+				},
+				"externallyOwned": {
+					"type": "boolean"
+				},
+				"firstName": {
+					"type": "string",
+					"description": "The first name of the user."
+				},
+				"id": {
+					"type": "string"
+				},
+				"language": {
+					"type": "string",
+					"description": "The preferred language of the user: Example: en."
+				},
+				"lastName": {
+					"type": "string",
+					"description": "The last name of the user."
+				},
+				"phoneLogin": {
+					"type": "string",
+					"description": "A numeric string that identifies users when they phone in to xMatters. This string may contain only digits and must be unique within the company."
+				},
+				"recipientType": {
+					"type": "string"
+				},
+				"roles": {
+					"type": "array",
+					"description": "A list of the user's roles. Users must have at least one role.",
+					"items": {
+						"$ref": "#/definitions/ReferenceById"
+					}
+				},
+				"site": {
+					"description": "The name of the site the user belongs to.",
+					"$ref": "#/definitions/ReferenceById"
+				},
+				"status": {
+					"type": "string",
+					"description": "Whether the user is active. Inactive users cannot receive notifications."
+				},
+				"supervisors": {
+					"type": "array",
+					"description": "A list of supervisors of this users. If this value is not provided, the XXX user becomes the supervisor. To assign a user as a supervisor, the authenticating user must have the appropriate permissions.",
+					"items": {
+						"$ref": "#/definitions/ReferenceById"
+					}
+				},
+				"targetName": {
+					"type": "string"
+				},
+				"timezone": {
+					"type": "string",
+					"description": "The time zone of the user. Example:  US/Pacific."
+				},
+				"webLogin": {
+					"type": "string",
+					"description": "The ID of the user when they log on to the web user interface. This value must be unique within the company and is often identical to the targetName field."
+				}
+			}
+		},
+		"IntegrationServiceJob": {
+			"properties": {
+				"communicationPlanId": {
+					"type": "string"
+				},
+				"integrationServiceId": {
+					"type": "string"
+				},
+				"integrationServiceName": {
+					"type": "string"
+				},
+				"logged": {
+					"type": "boolean"
+				},
+				"orgKey": {
+					"type": "string"
+				},
+				"request": {
+					"$ref": "#/definitions/HttpRequest"
+				}
+			}
+		},
+		"Person": {
+			"required": [
+				"externallyOwned",
+				"firstName",
+				"id",
+				"lastName",
+				"owner",
+				"recipientType",
+				"status",
+				"targetName"
+			],
+			"properties": {
+				"externalKey": {
+					"type": "string",
+					"description": "Identifies this resource in an external system. Used when externallyOwned is true."
+				},
+				"externallyOwned": {
+					"type": "boolean",
+					"description": "True if this resource is managed by an external system. Externally-owned resources cannot be deleted in the xMatters user interface."
+				},
+				"firstName": {
+					"type": "string",
+					"description": "The first name of the user."
+				},
+				"id": {
+					"type": "string",
+					"description": "An identifier (UUID or targetName) that represents this resource"
+				},
+				"language": {
+					"type": "string",
+					"description": "The preferred language of the user: Example: en."
+				},
+				"lastName": {
+					"type": "string",
+					"description": "The last name of the user."
+				},
+				"links": {
+					"description": "A list of links",
+					"$ref": "#/definitions/SelfLink"
+				},
+				"locked": {
+					"type": "array",
+					"description": "Lists the fields of externally-owned objects that are locked and cannot be modified in the xMatters user interface",
+					"items": {
+						"type": "string"
+					}
+				},
+				"owner": {
+					"description": "The owner of this resource",
+					"$ref": "#/definitions/ReferenceByIdAndSelfLink"
+				},
+				"phoneLogin": {
+					"type": "string",
+					"description": "A numeric string that identifies users when they phone in to xMatters. This string may contain only digits and must be unique within the company."
+				},
+				"recipientType": {
+					"type": "string",
+					"description": "Whether the resource is active. Inactive resources do not receive notifications.",
+					"enum": [
+						"PERSON",
+						"DEVICE",
+						"TEAM",
+						"GROUP",
+						"DYNAMIC_TEAM",
+						"WEB_SERVICE_USER"
+					]
+				},
+				"site": {
+					"description": "The name of the site the user belongs to.",
+					"$ref": "#/definitions/ReferenceByIdAndSelfLink"
+				},
+				"status": {
+					"type": "string",
+					"description": "Whether the user is active. Inactive users do not receive notifications.",
+					"enum": [
+						"ACTIVE",
+						"INACTIVE"
+					]
+				},
+				"targetName": {
+					"type": "string",
+					"description": "An identifier such as a name that can be used to identify a resource"
+				},
+				"timezone": {
+					"type": "string",
+					"description": "The time zone of the user. Example:  US/Pacific."
+				},
+				"webLogin": {
+					"type": "string",
+					"description": "The ID of the user when they log on to the web user interface. This value must be unique within the company and is often identical to the targetName field."
+				}
+			}
+		},
+		"NotFoundResponse": {
+			"required": [
+				"code",
+				"message",
+				"reason"
+			],
+			"properties": {
+				"code": {
+					"type": "integer",
+					"format": "int32",
+					"description": "The http response code.",
+					"enum": [
+						404
+					]
+				},
+				"message": {
+					"type": "string",
+					"description": "A detailed description of the response or error."
+				},
+				"reason": {
+					"type": "string",
+					"description": "A description of the response code.",
+					"enum": [
+						"Not Found"
+					]
+				}
+			}
+		}
+	}
+}
