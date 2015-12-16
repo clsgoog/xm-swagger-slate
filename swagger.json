@@ -2,7 +2,7 @@
     "swagger":"2.0",
     "info":{
         "description":"xMatters ReST API",
-        "title":"xMatters API",
+        "title":"xM API",
 		"version": "1.0"
     },
     "basePath":"/api/xm/1",
