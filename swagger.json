@@ -47,7 +47,7 @@
                 "tags": [
                     "Devices"
                 ],
-                "summary": "Returns information about a device.",
+                "summary": "TEST TEST TEST TEST TEST Returns information about a device.",
                 "description": "Returns information about a device. Use embed=timeframes to include device timeframes in the response.",
                 "operationId": "getDevice",
                 "parameters": [
